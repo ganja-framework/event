@@ -12,6 +12,18 @@ class DispatcherSpec extends Specification {
         then:
 
         dispatcher instanceof Dispatcher
+    }
 
+    void "it can accept listener"() {
+
+        given:
+        def dispatcher = new Dispatcher()
+        def listener = new Listener()
+
+        when:
+        dispatcher.addListener('event.name', listener)
+
+        then:
+        dispatcher.getListeners('event.name') == [ listener ]
     }
 }
