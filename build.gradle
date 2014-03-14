@@ -1,0 +1,97 @@
+apply plugin: 'groovy'
+apply plugin: 'cobertura'
+apply plugin: 'maven'
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src']
+        }
+    }
+
+    test {
+        groovy {
+            srcDirs = ['test']
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:2.2.4"
+    }
+}
+
+sourceCompatibility = 1.7
+version = "0.1.${System.env.BUILD_NUMBER}"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.2.2'
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+}
+
+cobertura {
+    coverageDirs << file("/build/classes/main")
+    coverageFormats = ['xml', 'html']
+}
+
+def loadProperties(String sourceFileName) {
+    def config = new Properties()
+    def propFile = new File(sourceFileName)
+    if (propFile.canRead()) {
+        config.load(new FileInputStream(propFile))
+        for (Map.Entry property in config) {
+            project.ext[property.key] = property.value;
+        }
+    }
+}
+
+loadProperties("${System.getProperty('user.home')}/.gradle/gradle.properties")
+
+if (!hasProperty('sonatypeUsername')) {
+    ext.sonatypeUsername = ''
+}
+if (!hasProperty('sonatypePassword')) {
+    ext.sonatypePassword = ''
+}
+if (!hasProperty('sonatypeUrl')) {
+    ext.sonatypeUrl = ''
+}
+
+uploadArchives {
+
+    group 'build'
+    description = "Does a maven deploy of archives artifacts"
+
+    repositories {
+        mavenDeployer {
+            repository(url: "${sonatypeUrl}/ganja-releases/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+            pom.version = version
+            pom.artifactId = "event"
+            pom.groupId = "ganja.component"
+            pom.project {
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
