@@ -1,6 +1,7 @@
 package ganja.component.event
 
 import spock.lang.Specification
+import spock.lang.MockingApi
 
 class DispatcherSpec extends Specification {
 
@@ -19,7 +20,7 @@ class DispatcherSpec extends Specification {
 
         given:
         def dispatcher = new Dispatcher()
-        def listener = new Listener()
+        def listener = Mock(ListenerInterface)
 
         when:
         dispatcher.addListener('event.name', listener)
@@ -34,7 +35,10 @@ class DispatcherSpec extends Specification {
 
         given:
         def dispatcher = new Dispatcher()
-        def subscriber = new Subscriber()
+        def subscriber = GroovyMock(SubscriberInterface) {
+            getSubscriberEvents() >> [ foo: [ 'onFoo', 5 ]]
+            getAt('onFoo') >> {}
+        }
 
         when:
         dispatcher.addSubscriber(subscriber)
@@ -48,12 +52,12 @@ class DispatcherSpec extends Specification {
         given:
         def dispatcher = new Dispatcher()
 
-        def listener1 = new Listener()
-        def listener2 = new Listener()
-        def listener3 = new Listener()
-        def listener4 = new Listener()
-        def listener5 = new Listener()
-        def listener6 = new Listener()
+        def listener1 = Mock(ListenerInterface)
+        def listener2 = Mock(ListenerInterface)
+        def listener3 = Mock(ListenerInterface)
+        def listener4 = Mock(ListenerInterface)
+        def listener5 = Mock(ListenerInterface)
+        def listener6 = Mock(ListenerInterface)
 
         when:
         dispatcher.addListener('foo', listener1, -10)

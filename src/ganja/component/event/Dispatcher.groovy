@@ -11,7 +11,7 @@ class Dispatcher {
         if( ! listeners[eventName])
             listeners[eventName] = []
 
-        listeners[eventName].add([ priority: priority, listener: listener ])
+        listeners[eventName] << [ priority: priority, listener: listener ]
     }
 
     List getListeners(String eventName) {
