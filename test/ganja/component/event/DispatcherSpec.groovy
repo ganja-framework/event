@@ -3,6 +3,8 @@ package ganja.component.event
 import spock.lang.Specification
 import spock.lang.MockingApi
 
+import java.util.concurrent.Callable
+
 class DispatcherSpec extends Specification {
 
     void "it is initializable"() {
@@ -76,5 +78,20 @@ class DispatcherSpec extends Specification {
                 foo: [ listener3, listener2, listener1 ],
                 bar: [ listener6, listener5, listener4 ]
             ]
+    }
+
+    void "it can dispatch event to listeners"() {
+
+        given:
+        def listener = GroovyMock(ListenerInterface)
+        def event = Mock(EventInterface)
+        def dispatcher = new Dispatcher()
+        dispatcher.addListener('foo', listener)
+
+        when:
+        dispatcher.dispatch('foo', event)
+
+        then:
+        1 * listener(event)
     }
 }
