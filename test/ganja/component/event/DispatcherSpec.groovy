@@ -30,6 +30,19 @@ class DispatcherSpec extends Specification {
         dispatcher.hasListeners('event.name')
     }
 
+    void "it can accept subscriber"() {
+
+        given:
+        def dispatcher = new Dispatcher()
+        def subscriber = new Subscriber()
+
+        when:
+        dispatcher.addSubscriber(subscriber)
+
+        then:
+        dispatcher.getListeners() != [:]
+    }
+
     void "it returns listeners sorted by priority"() {
 
         given:

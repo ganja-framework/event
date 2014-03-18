@@ -1,5 +1,11 @@
 package ganja.component.event
 
-class Listener {
+import java.util.concurrent.Callable
 
+class Listener implements Callable {
+
+    @Override
+    Object call() throws Exception {
+        return null
+    }
 }

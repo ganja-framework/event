@@ -1,10 +1,12 @@
 package ganja.component.event
 
+import java.util.concurrent.Callable
+
 class Dispatcher {
 
     Map<String,List> listeners = [:]
 
-    void addListener(String eventName, Listener listener, Integer priority = 0) {
+    void addListener(String eventName, Callable listener, Integer priority = 0) {
 
         if( ! listeners[eventName])
             listeners[eventName] = []
@@ -27,10 +29,16 @@ class Dispatcher {
         output
     }
 
-
-
     boolean hasListeners(String eventName) {
 
         listeners[eventName]?.size() as Boolean
+    }
+
+    void addSubscriber(SubscriberInterface subscriber) {
+
+        for(event in subscriber.getSubscriberEvents()) {
+
+            addListener(event.key, subscriber[event.value.getAt(0)], event.value.getAt(1))
+        }
     }
 }
