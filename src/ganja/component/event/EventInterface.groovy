@@ -9,4 +9,8 @@ public interface EventInterface {
     Boolean isPropagationStopped()
 
     void stopPropagation()
+
+    def getSubject()
+
+    void setSubject(def subject)
 }

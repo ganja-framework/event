@@ -6,6 +6,8 @@ class Event implements EventInterface {
     DispatcherInterface dispatcher
     Boolean propagationStopped = false
 
+    def subject
+
     @Override
     Boolean isPropagationStopped() {
 
