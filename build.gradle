@@ -42,6 +42,16 @@ cobertura {
     coverageFormats = ['xml', 'html']
 }
 
+if (!hasProperty('sonatypeUsername')) {
+    ext.sonatypeUsername = ''
+}
+if (!hasProperty('sonatypePassword')) {
+    ext.sonatypePassword = ''
+}
+if (!hasProperty('sonatypeUrl')) {
+    ext.sonatypeUrl = ''
+}
+
 uploadArchives {
 
     group 'build'
