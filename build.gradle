@@ -39,7 +39,9 @@ dependencies {
 
 cobertura {
     coverageDirs << file("/build/classes/main")
+    coverageSourceDirs = [ sourceSets.main.groovy.srcDirs ]
     coverageFormats = ['xml', 'html']
+    coverageExcludes = [ '.*example.*' ]
 }
 
 if (!hasProperty('sonatypeUsername')) {
