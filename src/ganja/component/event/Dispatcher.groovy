@@ -69,15 +69,21 @@ class Dispatcher implements DispatcherInterface {
             setDispatcher(this)
         }
 
-        if( ! hasListeners(eventName))
+        if( ! hasListeners(eventName)) {
+
             return event
+        }
 
         for(def listener in getListeners(eventName)) {
 
             listener(event)
 
-            if(event.isPropagationStopped())
+            if(event.isPropagationStopped()) {
+
                 break
+            }
         }
+
+        event
     }
 }
