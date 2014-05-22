@@ -22,7 +22,7 @@ class DispatcherSpec extends Specification {
 
         given:
         def dispatcher = new Dispatcher()
-        def listener = Mock(ListenerInterface)
+        def listener = Mock(Callable)
 
         when:
         dispatcher.addListener('event.name', listener)
@@ -54,12 +54,12 @@ class DispatcherSpec extends Specification {
         given:
         def dispatcher = new Dispatcher()
 
-        def listener1 = Mock(ListenerInterface)
-        def listener2 = Mock(ListenerInterface)
-        def listener3 = Mock(ListenerInterface)
-        def listener4 = Mock(ListenerInterface)
-        def listener5 = Mock(ListenerInterface)
-        def listener6 = Mock(ListenerInterface)
+        def listener1 = Mock(Callable)
+        def listener2 = Mock(Callable)
+        def listener3 = Mock(Callable)
+        def listener4 = Mock(Callable)
+        def listener5 = Mock(Callable)
+        def listener6 = Mock(Callable)
 
         when:
         dispatcher.addListener('foo', listener1, -10)
@@ -83,7 +83,7 @@ class DispatcherSpec extends Specification {
     void "it can dispatch event to listeners"() {
 
         given:
-        def listener = GroovyMock(ListenerInterface)
+        def listener = GroovyMock(Callable)
         def event = Mock(EventInterface)
         def dispatcher = new Dispatcher()
         dispatcher.addListener('foo', listener)
