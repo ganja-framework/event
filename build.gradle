@@ -61,7 +61,7 @@ uploadArchives {
 
     repositories {
         mavenDeployer {
-            repository(url: "${sonatypeUrl}/ganja-releases/") {
+            repository(url: "https://www.nixilla.net/nexus/content/repositories/releases/") {
                 authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
             pom.version = version
