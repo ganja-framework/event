@@ -8,13 +8,11 @@ class Event implements EventInterface {
 
     def subject
 
-    @Override
     Boolean isPropagationStopped() {
 
         propagationStopped
     }
 
-    @Override
     void stopPropagation() {
 
         propagationStopped = true

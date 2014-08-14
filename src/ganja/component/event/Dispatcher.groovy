@@ -6,7 +6,6 @@ class Dispatcher implements DispatcherInterface {
 
     Map<String,List> listeners = [:]
 
-    @Override
     DispatcherInterface addListener(String eventName, Callable listener, Integer priority = 0) {
 
         if( ! listeners[eventName])
@@ -17,13 +16,11 @@ class Dispatcher implements DispatcherInterface {
         this
     }
 
-    @Override
     List getListeners(String eventName) {
 
         listeners[eventName]?.sort({ - it.priority })*.listener
     }
 
-    @Override
     Map getListeners() {
 
         Map output = [:]
@@ -34,13 +31,11 @@ class Dispatcher implements DispatcherInterface {
         output
     }
 
-    @Override
     Boolean hasListeners(String eventName) {
 
         listeners[eventName]?.size() as Boolean
     }
 
-    @Override
     void addSubscriber(SubscriberInterface subscriber) {
 
         for(event in subscriber.getSubscriberEvents()) {
@@ -49,17 +44,14 @@ class Dispatcher implements DispatcherInterface {
         }
     }
 
-    @Override
     void removeListener(String eventName, Callable listener) {
 
     }
 
-    @Override
     void removeSubscriber(SubscriberInterface subscriber) {
 
     }
 
-    @Override
     EventInterface dispatch(String eventName, EventInterface event = null) {
 
         if( ! event) event = new Event()
