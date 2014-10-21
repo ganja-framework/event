@@ -30,4 +30,29 @@ class EventSpec extends Specification {
         then:
         event.subject == 5
     }
+
+    void "it knows if the event propagation is stopped"() {
+
+        given:
+        Event event = new Event()
+
+        expect:
+        ! event.isPropagationStopped()
+
+        when:
+        event.stopPropagation()
+
+        then:
+        event.isPropagationStopped()
+    }
+
+    void "it can have dispatcher"() {
+
+        given:
+        def dispatcher = Mock(DispatcherInterface)
+        Event event = new Event(dispatcher: dispatcher)
+
+        expect:
+        event.dispatcher == dispatcher
+    }
 }
