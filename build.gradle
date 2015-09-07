@@ -1,6 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'cobertura'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 sourceSets {
     main {
@@ -33,27 +34,25 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.2.2'
+    compile 'org.codehaus.groovy:groovy-all:2.3.6'
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.groovy
+}
+
+artifacts {
+    archives sourcesJar
 }
 
 cobertura {
     coverageDirs << file("/build/classes/main")
+    coverageSourceDirs = [ sourceSets.main.groovy.srcDirs ]
     coverageFormats = ['xml', 'html']
+    coverageExcludes = [ '.*example.*' ]
 }
-
-def loadProperties(String sourceFileName) {
-    def config = new Properties()
-    def propFile = new File(sourceFileName)
-    if (propFile.canRead()) {
-        config.load(new FileInputStream(propFile))
-        for (Map.Entry property in config) {
-            project.ext[property.key] = property.value;
-        }
-    }
-}
-
-loadProperties("${System.getProperty('user.home')}/.gradle/gradle.properties")
 
 if (!hasProperty('sonatypeUsername')) {
     ext.sonatypeUsername = ''
@@ -72,7 +71,7 @@ uploadArchives {
 
     repositories {
         mavenDeployer {
-            repository(url: "${sonatypeUrl}/ganja-releases/") {
+            repository(url: "${sonatypeUrl}/releases/") {
                 authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
             pom.version = version
